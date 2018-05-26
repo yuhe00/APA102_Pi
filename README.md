@@ -17,7 +17,7 @@ The library is designed to take care of the details about sending colour command
 * A Raspberry Pi, running an up-to-date version of Raspbian (the library is tested with the 2018-04-18 version of Raspbian Stretch Lite).
 * If hardware SPI is used: SPI enabled and active (`raspi-config`, Interfacing Options, SPI, Enable); The SPI must be free and unused.
 * For software SPI (bit bang mode): Two free GPIO pins
-* The Adafruit_Python_GPIO library (https://github.com/adafruit/Adafruit_Python_GPIO) 
+* The GPIO Zero library
 * Python 3: Some people tried with Python 2 and reported it working, but I can't vouch for this myself. I used Python 3 for all development and test. Note that you need to install the Adafruit_Python_GPIO with Python 3! If you install with Python 2, then the library is invisible for Python 3 applications.
 
 Ideally, a 10$ Raspberry Pi Zero W is dedicated to the task of driving the LEDs. The connector to the LED stripe can be soldered directly to the correct ports on the board.
@@ -76,9 +76,7 @@ Then, update your installation (`sudo apt-get update && sudo apt-get -y upgrade`
 - Activate SPI: `sudo raspi-config`; Go to "Interfacing Options"; Go to "SPI"; Enable SPI; Exit exit the tool and reboot  
 - Install the git client: `sudo apt-get install -y git`  
 - Prepare GIT: `git config --global user.name "John Doe" && git config --global user.email johndoe@example.com`  
-- Install Python 3 and some packages required by the Adafruit library: `sudo apt-get install -y python3-dev python3-pip python3-smbus python3-rpi.gpio`  
-- Fetch the Adafruit_Python_GPIO library: `cd /tmp && wget https://github.com/adafruit/Adafruit_Python_GPIO/archive/master.zip && unzip master.zip`  
-- Install the library: `cd Adafruit_Python_GPIO-master && sudo python3 ./setup.py install`  
+- Install Python 3 and GPIO Zero: `sudo apt-get install -y python3-dev python3-pip python3-gpiozero`  
 - Create a development directory and change into it: `mkdir ~/Development && cd ~/Development`  
 - Get the APA102 Library and sample light programs: `git clone https://github.com/tinue/APA102_Pi.git`  
 - You might want to set the number of LEDs to match your strip: `cd APA102_Pi && nano runcolorcycle.py`; Update the number, Ctrl-X and "Yes" to save.  
@@ -98,3 +96,4 @@ Then, update your installation (`sudo apt-get update && sudo apt-get -y upgrade`
 - 2017-11-05: Exchanged the SPI library to Adafruit_Python_GPIO. This allows to support devices that do not use hardware SPI, for example the Pimoroni Blinkt! or the Phat Beat.
 - 2018-01-19: Tiny release: Added a sample
 - 2018-05-25: No change in the driver; Slight restructuring of the templates and schemes to allow easier change of the SPI pins; Additional sample specific to the the Pimoroni Blinkt!
+- 2018-05-26: Yet another GPIO library: GPIO Zero. This library is included in Raspbian, and can easily be added with Raspbian Lite.

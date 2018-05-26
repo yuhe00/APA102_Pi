@@ -1,6 +1,5 @@
 """This is the main driver module for APA102 LEDs"""
-import Adafruit_GPIO as GPIO
-import Adafruit_GPIO.SPI as SPI
+from gpiozero import MCP3008
 from math import ceil
 
 RGB_MAP = { 'rgb': [3, 2, 1], 'rbg': [3, 1, 2], 'grb': [2, 3, 1],
@@ -88,9 +87,9 @@ class APA102:
         
         # MOSI 10 and SCLK 11 is hardware SPI, which needs to be set-up differently
         if mosi == 10 and sclk == 11:
-        	self.spi = SPI.SpiDev(0, 0, max_speed_hz) # Bus 0, chip select 0
+            self.spi = MCP3008(channel=0) # Bus 0, chip select 0
         else:
-        	self.spi = SPI.BitBang(GPIO.get_platform_gpio(), sclk, mosi)
+            self.spi = MCP3008(channel=0, clock_pin=sclk, mosi_pin=mosi) #, miso_pin=9, select_pin=8)
 
     def clock_start_frame(self):
         """Sends a start frame to the LED strip.
@@ -98,7 +97,7 @@ class APA102:
         This method clocks out a start frame, telling the receiving LED
         that it must update its own color now.
         """
-        self.spi.write([0] * 4)  # Start frame, 32 zero bits
+        self.spi._spi.transfer([0] * 4)  # Start frame, 32 zero bits
 
 
     def clock_end_frame(self):
@@ -130,7 +129,7 @@ class APA102:
         """
         # Round up num_led/2 bits (or num_led/16 bytes)
         for _ in range((self.num_led + 15) // 16):
-            self.spi.write([0x00])
+            self.spi._spi.transfer([0x00])
 
 
     def clear_strip(self):
@@ -201,7 +200,7 @@ class APA102:
         self.clock_start_frame()
         # xfer2 kills the list, unfortunately. So it must be copied first
         # SPI takes up to 4096 Integers. So we are fine for up to 1024 LEDs.
-        self.spi.write(list(self.leds))
+        self.spi._spi.transfer(list(self.leds))
         self.clock_end_frame()
 
 
