@@ -6,7 +6,7 @@ import random
 
 import apa102
 
-NUM_LEDS = 10
+NUM_LEDS = 37
 
 def main():
     try:
