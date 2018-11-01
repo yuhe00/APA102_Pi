@@ -11,7 +11,7 @@ NUM_LEDS = 37
 def main():
     try:
         strip = apa102.APA102(num_led = NUM_LEDS,
-                              global_brightness = 255,
+                              global_brightness = 140,
                               mosi = 10,
                               sclk = 11,
                               order = 'rbg')
