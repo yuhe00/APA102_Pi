@@ -11,7 +11,7 @@ NUM_LEDS = 44
 def main():
     try:
         strip = apa102.APA102(num_led = NUM_LEDS,
-                              global_brightness = 255,
+                              global_brightness = 140,
                               mosi = 10,
                               sclk = 11,
                               order = 'rbg')
@@ -37,8 +37,8 @@ def main():
 
             for (l, p, s) in trains:
                 for i in range(0, l):
-                    index = int(p * (NUM_LEDS - 1))
-                    strip.set_pixel(max(index - i, 0), 0, 0, 0, 0)
+                    index = NUM_LEDS - int(p * NUM_LEDS)
+                    strip.set_pixel(min(index + i, NUM_LEDS - 1), 0, 0, 0, 0)
 
             strip.show();
 
